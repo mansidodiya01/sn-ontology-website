@@ -1,0 +1,9 @@
+Surya Namaskar Ontology Documentation
+
+This folder is intended to contain generated ontology documentation
+for the Surya Namaskar ontology.
+
+Suggested future files:
+- ontology-doc.html
+- WebVOWL visualization
+- class/property descriptions

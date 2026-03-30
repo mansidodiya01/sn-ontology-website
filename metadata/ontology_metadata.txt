@@ -1,0 +1,34 @@
+Title: Surya Namaskar Sequence Ontology
+
+Ontology File: models/combined.owl
+
+Namespace: http://example.org/suryanamaskar#
+
+Format: OWL / RDF/XML
+
+Main Classes:
+- Pose
+- SequenceStep
+- Variant
+
+Main Object Properties:
+- hasPose
+- belongsToVariant
+- hasNextStep
+- hasPreviousStep
+- repeatsStep
+- hasInverseStep
+
+Main Datatype Properties:
+- stepNumber
+- hasMantra
+- hasChakra
+- isStandingOnTwoFeet
+- isStandingOnAtLeastOneFoot
+
+Author: Mansi Dodiya
+
+Affiliation: IIT (BHU), Varanasi
+
+Description:
+This ontology models Surya Namaskar as a sequence of poses, including variants, relationships between steps, and associated attributes such as mantra, chakra, and support type.

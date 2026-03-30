@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surya Namaskar Ontology</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Surya Namaskar Ontology</h2>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#ontology">Ontology Overview</a>
+        <a href="#files">Project Files</a>
+        <a href="#metadata">Ontology Metadata</a>
+        <a href="#usecases">Use Cases</a>
+        <a href="#cq">Competency Questions</a>
+        <a href="#sparql">SPARQL Queries</a>
+        <a href="#visuals">Visual Resources</a>
+        <a href="#team">Team</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section id="about">
+        <h1>Surya Namaskar Ontology</h1>
+        <p>
+          This ontology models Surya Namaskar as poses, sequence steps, and variants.
+          It supports structured querying of sequence order, repeated steps, inverse
+          relationships, support type, mantra, chakra, and shared poses across variants.
+        </p>
+        <p>
+          The ontology is designed to represent multiple Surya Namaskar traditions in
+          a unified structure so that they can be compared and queried systematically.
+        </p>
+      </section>
+
+      <section id="ontology">
+        <h2>Ontology Overview</h2>
+
+        <h3>Classes</h3>
+        <ul>
+          <li><strong>Pose</strong> – Represents a yoga pose identity.</li>
+          <li><strong>SequenceStep</strong> – Represents one occurrence of a pose in a sequence.</li>
+          <li><strong>Variant</strong> – Represents a Surya Namaskar tradition or sequence variant.</li>
+        </ul>
+
+        <h3>Object Properties</h3>
+        <ul>
+          <li><strong>hasPose</strong> – Links a sequence step to the pose performed at that step.</li>
+          <li><strong>belongsToVariant</strong> – Links a sequence step to its variant.</li>
+          <li><strong>hasNextStep</strong> – Links a step to the next step.</li>
+          <li><strong>hasPreviousStep</strong> – Links a step to the previous step.</li>
+          <li><strong>repeatsStep</strong> – Links repeated or mirrored steps.</li>
+          <li><strong>hasInverseStep</strong> – Links inverse or opposite steps.</li>
+          <li><strong>samePoseAs</strong> – Links equivalent or normalized pose identities.</li>
+        </ul>
+
+        <h3>Datatype Properties</h3>
+        <ul>
+          <li><strong>stepNumber</strong> – Position of a step in a sequence.</li>
+          <li><strong>hasMantra</strong> – Mantra associated with a step.</li>
+          <li><strong>hasChakra</strong> – Chakra associated with a step.</li>
+          <li><strong>hasSupportType</strong> – Support/body position type for a step.</li>
+          <li><strong>isStandingOnTwoFeet</strong> – Indicates whether a pose is performed on two feet.</li>
+          <li><strong>isStandingOnAtLeastOneFoot</strong> – Indicates whether at least one foot is used for support.</li>
+          <li><strong>hasCYPPage</strong> – CYP reference page for a pose.</li>
+          <li><strong>hasAlternateName</strong> – Alternate name of a pose.</li>
+        </ul>
+      </section>
+
+      <section id="files">
+        <h2>Project Files</h2>
+        <ul>
+          <li><a href="models/combined.owl" target="_blank">Main OWL File</a></li>
+          <li><a href="queries/competency_questions_and_sparql.txt" target="_blank">Competency Questions and SPARQL Queries</a></li>
+          <li><a href="metadata/ontology_metadata.txt" target="_blank">Ontology Metadata</a></li>
+          <li><a href="docs/ontology_documentation.txt" target="_blank">Documentation Folder</a></li>
+          <li><a href="README.md" target="_blank">Project README</a></li>
+        </ul>
+      </section>
+
+      <section id="metadata">
+        <h2>Ontology Metadata</h2>
+        <p><strong>Title:</strong> Surya Namaskar Sequence Ontology</p>
+        <p><strong>Namespace:</strong> http://example.org/suryanamaskar#</p>
+        <p><strong>Format:</strong> OWL / RDF/XML</p>
+        <p><strong>Main Classes:</strong> Pose, SequenceStep, Variant</p>
+        <p><strong>Author:</strong> Mansi Dodiya</p>
+        <p><strong>Affiliation:</strong> IIT (BHU), Varanasi</p>
+      </section>
+
+      <section id="usecases">
+        <h2>Use Cases</h2>
+        <ul>
+          <li>Compare Surya Namaskar variants.</li>
+          <li>Identify repeated poses and repeated sequence steps.</li>
+          <li>Find inverse poses or inverse steps.</li>
+          <li>Retrieve the ordered sequence of poses in Base SN.</li>
+          <li>Query poses based on standing posture and support type.</li>
+          <li>Retrieve mantra and chakra associated with Base SN steps.</li>
+        </ul>
+      </section>
+
+      <section id="cq">
+        <h2>Competency Questions</h2>
+        <ul>
+          <li>C1: What are the poses in Surya Namaskar?</li>
+          <li>C2: How many poses are in Base Surya Namaskar and what are they?</li>
+          <li>C3: What poses are performed standing on two feet or at least one foot?</li>
+          <li>C4: Which poses are repeated in Surya Namaskar?</li>
+          <li>C5: Which poses have inverse relationships?</li>
+          <li>C6: How many Surya Namaskar variants are there?</li>
+          <li>C7: Which poses are common across variants?</li>
+          <li>C8: What is the sequence order of poses?</li>
+        </ul>
+      </section>
+
+      <section id="sparql">
+        <h2>SPARQL Queries</h2>
+        <p>
+          The complete competency questions and SPARQL query set is available here:
+        </p>
+        <p>
+          <a href="queries/competency_questions_and_sparql.txt" target="_blank">
+            Open Competency Questions and SPARQL Queries
+          </a>
+        </p>
+      </section>
+
+      <section id="visuals">
+        <h2>Visual Resources</h2>
+        <p>
+          This section can include ontology diagrams, Protégé screenshots,
+          and ontology visualizations such as WebVOWL.
+        </p>
+        <ul>
+          <li><a href="images/image_notes.txt" target="_blank">Image Notes</a></li>
+        </ul>
+      </section>
+
+      <section id="team">
+        <h2>Team</h2>
+        <p><strong>Mansi Dodiya</strong></p>
+        <p>IIT (BHU), Varanasi</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
