@@ -26,6 +26,7 @@
     <main class="content">
       <section id="about">
         <h1>Surya Namaskar Ontology</h1>
+        <p class="subtitle">Semantic Modeling | OWL | SPARQL | Knowledge Representation</p>
         <p>
           This ontology models Surya Namaskar as poses, sequence steps, and variants.
           It supports structured querying of sequence order, repeated steps, inverse
@@ -73,13 +74,25 @@
 
       <section id="files">
         <h2>Project Files</h2>
-        <ul>
-          <li><a href="models/combined.owl" target="_blank">Main OWL File</a></li>
-          <li><a href="queries/competency_questions_and_sparql.txt" target="_blank">Competency Questions and SPARQL Queries</a></li>
-          <li><a href="metadata/ontology_metadata.txt" target="_blank">Ontology Metadata</a></li>
-          <li><a href="docs/ontology_documentation.txt" target="_blank">Documentation Folder</a></li>
-          <li><a href="README.md" target="_blank">Project README</a></li>
-        </ul>
+
+        <div class="file-box">
+          <h3>Ontology File</h3>
+          <p>Main OWL ontology file for Surya Namaskar.</p>
+          <a class="btn" href="models/combined.owl" target="_blank">View OWL</a>
+          <a class="btn" href="models/combined.owl" download>Download OWL</a>
+        </div>
+
+        <div class="file-box">
+          <h3>pyLODE Documentation</h3>
+          <p>Generated ontology documentation for classes, properties, and metadata.</p>
+          <a class="btn" href="docs/ontology-doc.html" target="_blank">View Documentation</a>
+        </div>
+
+        <div class="file-box">
+          <h3>Metadata</h3>
+          <p>Ontology metadata and description.</p>
+          <a class="btn" href="metadata/ontology_metadata.txt" target="_blank">View Metadata</a>
+        </div>
       </section>
 
       <section id="metadata">
@@ -120,25 +133,331 @@
 
       <section id="sparql">
         <h2>SPARQL Queries</h2>
-        <p>
-          The complete competency questions and SPARQL query set is available here:
-        </p>
-        <p>
-          <a href="queries/competency_questions_and_sparql.txt" target="_blank">
-            Open Competency Questions and SPARQL Queries
-          </a>
-        </p>
+
+        <div class="query-block">
+          <h3>C1: What are the poses in Surya Namaskar?</h3>
+
+          <h4>(a) List all pose identities</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?pose ?label
+WHERE {
+  ?pose rdf:type :Pose ;
+        rdfs:label ?label .
+}
+ORDER BY ?label
+          </pre>
+
+          <h4>(b) Count all pose identities</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+
+SELECT (COUNT(?pose) AS ?poseCount)
+WHERE {
+  ?pose rdf:type :Pose .
+}
+          </pre>
+        </div>
+
+        <div class="query-block">
+          <h3>C2: How many poses are in Base Surya Namaskar and what are they?</h3>
+
+          <h4>(a) Count poses in Base SN</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+
+SELECT (COUNT(?step) AS ?count)
+WHERE {
+  ?step :belongsToVariant :BaseSN .
+}
+          </pre>
+
+          <h4>(b) List poses in Base SN</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?stepNo ?poseLabel
+WHERE {
+  ?step :belongsToVariant :BaseSN ;
+        :stepNumber ?stepNo ;
+        :hasPose ?pose .
+  ?pose rdfs:label ?poseLabel .
+}
+ORDER BY ?stepNo
+          </pre>
+        </div>
+
+        <div class="query-block">
+          <h3>C3: What poses are performed standing on two feet or at least one foot?</h3>
+
+          <h4>(a) Standing on two feet</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?step ?stepNo ?poseLabel
+WHERE {
+  ?step :isStandingOnTwoFeet true ;
+        :stepNumber ?stepNo ;
+        :hasPose ?pose .
+  ?pose rdfs:label ?poseLabel .
+}
+ORDER BY ?stepNo
+          </pre>
+
+          <h4>(b) Standing on at least one foot</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?step ?stepNo ?poseLabel
+WHERE {
+  ?step :isStandingOnAtLeastOneFoot true ;
+        :stepNumber ?stepNo ;
+        :hasPose ?pose .
+  ?pose rdfs:label ?poseLabel .
+}
+ORDER BY ?stepNo
+          </pre>
+
+          <h4>(c) Standing on two feet in Base SN only</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?stepNo ?poseLabel
+WHERE {
+  ?step :belongsToVariant :BaseSN ;
+        :isStandingOnTwoFeet true ;
+        :stepNumber ?stepNo ;
+        :hasPose ?pose .
+  ?pose rdfs:label ?poseLabel .
+}
+ORDER BY ?stepNo
+          </pre>
+        </div>
+
+        <div class="query-block">
+          <h3>C4: Which poses are repeated in Surya Namaskar?</h3>
+
+          <h4>(a) Repeated steps in Base SN</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+
+SELECT ?step1 ?n1 ?step2 ?n2
+WHERE {
+  ?step1 :belongsToVariant :BaseSN ;
+         :repeatsStep ?step2 ;
+         :stepNumber ?n1 .
+  ?step2 :stepNumber ?n2 .
+  FILTER(?n1 &lt; ?n2)
+}
+ORDER BY ?n1
+          </pre>
+
+          <h4>(b) Repeated poses with labels</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?n1 ?poseLabel1 ?n2 ?poseLabel2
+WHERE {
+  ?step1 :belongsToVariant :BaseSN ;
+         :repeatsStep ?step2 ;
+         :stepNumber ?n1 ;
+         :hasPose ?pose1 .
+  ?step2 :stepNumber ?n2 ;
+         :hasPose ?pose2 .
+  ?pose1 rdfs:label ?poseLabel1 .
+  ?pose2 rdfs:label ?poseLabel2 .
+  FILTER(?n1 &lt; ?n2)
+}
+ORDER BY ?n1
+          </pre>
+        </div>
+
+        <div class="query-block">
+          <h3>C5: Which poses have inverse relationships?</h3>
+
+          <h4>(a) Inverse steps in Base SN</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+
+SELECT ?step1 ?n1 ?step2 ?n2
+WHERE {
+  ?step1 :belongsToVariant :BaseSN ;
+         :hasInverseStep ?step2 ;
+         :stepNumber ?n1 .
+  ?step2 :stepNumber ?n2 .
+  FILTER(?n1 &lt; ?n2)
+}
+ORDER BY ?n1
+          </pre>
+
+          <h4>(b) Inverse poses with labels</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?n1 ?poseLabel1 ?n2 ?poseLabel2
+WHERE {
+  ?step1 :belongsToVariant :BaseSN ;
+         :hasInverseStep ?step2 ;
+         :stepNumber ?n1 ;
+         :hasPose ?pose1 .
+  ?step2 :stepNumber ?n2 ;
+         :hasPose ?pose2 .
+  ?pose1 rdfs:label ?poseLabel1 .
+  ?pose2 rdfs:label ?poseLabel2 .
+  FILTER(?n1 &lt; ?n2)
+}
+ORDER BY ?n1
+          </pre>
+        </div>
+
+        <div class="query-block">
+          <h3>C6: How many Surya Namaskar variants are there?</h3>
+
+          <h4>(a) Count variants</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+
+SELECT (COUNT(?variant) AS ?variantCount)
+WHERE {
+  ?variant rdf:type :Variant .
+}
+          </pre>
+
+          <h4>(b) List variants</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?variant ?label
+WHERE {
+  ?variant rdf:type :Variant ;
+           rdfs:label ?label .
+}
+ORDER BY ?label
+          </pre>
+        </div>
+
+        <div class="query-block">
+          <h3>C7: Which poses are common across variants?</h3>
+
+          <h4>(a) Poses appearing in more than one variant</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?poseLabel (COUNT(DISTINCT ?variant) AS ?variantCount)
+WHERE {
+  ?step :belongsToVariant ?variant ;
+        :hasPose ?pose .
+  ?pose rdfs:label ?poseLabel .
+}
+GROUP BY ?poseLabel
+HAVING (COUNT(DISTINCT ?variant) &gt; 1)
+ORDER BY DESC(?variantCount) ?poseLabel
+          </pre>
+
+          <h4>(b) Show variants for each pose</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?poseLabel ?variantLabel
+WHERE {
+  ?step :belongsToVariant ?variant ;
+        :hasPose ?pose .
+  ?pose rdfs:label ?poseLabel .
+  ?variant rdfs:label ?variantLabel .
+}
+ORDER BY ?poseLabel ?variantLabel
+          </pre>
+        </div>
+
+        <div class="query-block">
+          <h3>C8: What is the sequence order of poses?</h3>
+
+          <h4>(a) Next pose (example: Step 4)</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?currentNo ?currentPoseLabel ?nextNo ?nextPoseLabel
+WHERE {
+  :BaseSN_Step_04 :stepNumber ?currentNo ;
+                  :hasPose ?currentPose ;
+                  :hasNextStep ?nextStep .
+  ?currentPose rdfs:label ?currentPoseLabel .
+  ?nextStep :stepNumber ?nextNo ;
+            :hasPose ?nextPose .
+  ?nextPose rdfs:label ?nextPoseLabel .
+}
+          </pre>
+
+          <h4>(b) Previous pose (example: Step 4)</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?prevNo ?prevPoseLabel ?currentNo ?currentPoseLabel
+WHERE {
+  :BaseSN_Step_04 :stepNumber ?currentNo ;
+                  :hasPose ?currentPose ;
+                  :hasPreviousStep ?prevStep .
+  ?currentPose rdfs:label ?currentPoseLabel .
+  ?prevStep :stepNumber ?prevNo ;
+            :hasPose ?prevPose .
+  ?prevPose rdfs:label ?prevPoseLabel .
+}
+          </pre>
+
+          <h4>(c) Full sequence order in Base SN</h4>
+          <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?currentNo ?currentPoseLabel ?nextNo ?nextPoseLabel
+WHERE {
+  ?step :belongsToVariant :BaseSN ;
+        :stepNumber ?currentNo ;
+        :hasPose ?currentPose ;
+        :hasNextStep ?nextStep .
+  ?currentPose rdfs:label ?currentPoseLabel .
+  ?nextStep :stepNumber ?nextNo ;
+            :hasPose ?nextPose .
+  ?nextPose rdfs:label ?nextPoseLabel .
+}
+ORDER BY ?currentNo
+          </pre>
+        </div>
       </section>
 
       <section id="visuals">
         <h2>Visual Resources</h2>
-        <p>
-          This section can include ontology diagrams, Protégé screenshots,
-          and ontology visualizations such as WebVOWL.
-        </p>
-        <ul>
-          <li><a href="images/image_notes.txt" target="_blank">Image Notes</a></li>
-        </ul>
+
+        <div class="visual-block">
+          <h3>Ontology Diagram</h3>
+          <img src="images/ontology_diagram.png" alt="Ontology Diagram">
+        </div>
+
+        <div class="visual-block">
+          <h3>Protégé View</h3>
+          <img src="images/protege.png" alt="Protege View">
+        </div>
+
+        <div class="visual-block">
+          <h3>WebVOWL View</h3>
+          <img src="images/webvowl.png" alt="WebVOWL View">
+        </div>
       </section>
 
       <section id="team">
