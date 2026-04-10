@@ -48,5 +48,6 @@ The ontology supports semantic querying of:
 - C9: What is the sequence order of poses in BaseSN?
 
 ## Author
-Mansi Dodiya 
+Mansi Dodiya,
+
 IIT (BHU), Varanasi
